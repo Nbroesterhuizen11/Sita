@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sita Oppas – Spijkenisse & Omgeving</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink:       #ff6eb4;
+    --pink-light: #ffd6ec;
+    --pink-pale:  #fff0f8;
+    --pink-dark:  #d63d8a;
+    --yellow:     #ffd166;
+    --mint:       #a8e6cf;
+    --purple:     #c084fc;
+    --white:      #ffffff;
+    --text:       #3d2040;
+    --gray:       #9b7fa8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--pink-pale);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── BUBBLY BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(255,110,180,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(192,132,252,0.12) 0%, transparent 35%),
+      radial-gradient(circle at 50% 80%, rgba(255,209,102,0.12) 0%, transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(168,230,207,0.15) 0%, transparent 35%);
+    background-color: #fff5fb;
+  }
+
+  /* Floating bubbles */
+  .bubbles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .bubble {
+    position: absolute; border-radius: 50%;
+    opacity: 0.18; animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) scale(0.8); opacity: 0; }
+    10%  { opacity: 0.18; }
+    90%  { opacity: 0.18; }
+    100% { transform: translateY(-20vh) scale(1.1); opacity: 0; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 6%;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--pink-light);
+    box-shadow: 0 2px 20px rgba(255,110,180,0.1);
+  }
+  .logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem; color: var(--pink-dark);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-emoji { font-size: 1.6rem; }
+  nav ul { list-style: none; display: flex; gap: 28px; }
+  nav ul a {
+    text-decoration: none; color: var(--gray);
+    font-weight: 700; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--pink-dark); }
+  .nav-cta {
+    background: var(--pink); color: white !important;
+    padding: 10px 22px; border-radius: 50px;
+    font-weight: 800 !important; box-shadow: 0 4px 14px rgba(255,110,180,0.4);
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 20px rgba(255,110,180,0.5) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 6% 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 560px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--yellow); border-radius: 50px;
+    padding: 8px 20px; font-weight: 800; font-size: 0.85rem;
+    color: #7a5500; margin-bottom: 24px;
+    animation: bounceIn 0.6s ease both;
+    box-shadow: 0 4px 12px rgba(255,209,102,0.4);
+  }
+  @keyframes bounceIn {
+    0%  { opacity:0; transform: scale(0.5); }
+    70% { transform: scale(1.08); }
+    100%{ opacity:1; transform: scale(1); }
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1.05; color: var(--pink-dark);
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 span { color: var(--purple); }
+  .hero-sub {
+    margin-top: 20px; font-size: 1.1rem; color: var(--gray);
+    line-height: 1.7; font-weight: 600;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .price-tag {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 28px; background: white;
+    border: 2px solid var(--pink-light); border-radius: 16px;
+    padding: 16px 24px; box-shadow: 0 4px 20px rgba(255,110,180,0.12);
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .price-big {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4rem; color: var(--pink-dark); line-height: 1;
+  }
+  .price-info { font-size: 0.85rem; color: var(--gray); font-weight: 700; line-height: 1.4; }
+
+  .hero-actions {
+    margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .btn-pink {
+    background: var(--pink); color: white;
+    padding: 16px 32px; border-radius: 50px;
+    font-weight: 800; font-size: 1rem; text-decoration: none;
+    box-shadow: 0 6px 20px rgba(255,110,180,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(255,110,180,0.5); }
+  .btn-outline {
+    border: 2.5px solid var(--pink); color: var(--pink-dark);
+    padding: 16px 32px; border-radius: 50px;
+    font-weight: 800; font-size: 1rem; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-outline:hover { background: var(--pink-light); }
+
+  /* Hero illustration side */
+  .hero-art {
+    position: absolute; right: 4%; top: 50%; transform: translateY(-50%);
+    font-size: 9rem; line-height: 1;
+    animation: wobble 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(255,110,180,0.25));
+    z-index: 1;
+  }
+  @keyframes wobble {
+    0%,100%{ transform: translateY(-50%) rotate(-3deg); }
+    50%    { transform: translateY(-54%) rotate(3deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── ABOUT ── */
+  section { padding: 90px 6%; position: relative; z-index: 1; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 800; letter-spacing: 3px;
+    color: var(--pink); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 4vw, 3rem); color: var(--pink-dark);
+    margin-bottom: 48px; line-height: 1.1;
+  }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-card {
+    background: white; border-radius: 24px;
+    padding: 48px 40px; text-align: center;
+    box-shadow: 0 8px 40px rgba(255,110,180,0.12);
+    border: 2px solid var(--pink-light);
+  }
+  .about-emoji { font-size: 5rem; margin-bottom: 16px; display: block; }
+  .about-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem; color: var(--pink-dark); margin-bottom: 6px;
+  }
+  .about-age { color: var(--gray); font-weight: 700; margin-bottom: 20px; }
+  .about-desc { color: var(--gray); line-height: 1.8; font-size: 0.95rem; }
+
+  .about-features { display: flex; flex-direction: column; gap: 20px; }
+  .feature {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: white; border-radius: 16px; padding: 20px 24px;
+    box-shadow: 0 4px 16px rgba(255,110,180,0.08);
+    border: 1.5px solid var(--pink-light);
+    transition: transform 0.2s;
+  }
+  .feature:hover { transform: translateX(6px); }
+  .feature-icon {
+    font-size: 1.8rem; min-width: 48px; height: 48px;
+    background: var(--pink-light); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feature h4 { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .feature p { color: var(--gray); font-size: 0.88rem; line-height: 1.6; }
+
+  /* ── CALENDAR ── */
+  .calendar-section { background: white; border-radius: 32px; margin: 0 3%; padding: 60px 5%; box-shadow: 0 8px 40px rgba(255,110,180,0.1); }
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+  .cal-nav { display: flex; align-items: center; gap: 16px; }
+  .cal-btn {
+    background: var(--pink-light); border: none; border-radius: 50%;
+    width: 40px; height: 40px; cursor: pointer; font-size: 1.1rem;
+    color: var(--pink-dark); font-weight: 800;
+    transition: background 0.2s; display: flex; align-items: center; justify-content: center;
+  }
+  .cal-btn:hover { background: var(--pink); color: white; }
+  .cal-month {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem; color: var(--pink-dark);
+  }
+  .cal-legend { display: flex; gap: 20px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--gray); }
+  .legend-dot { width: 14px; height: 14px; border-radius: 4px; }
+  .dot-available { background: var(--mint); }
+  .dot-booked { background: #ffb3b3; }
+  .dot-unavailable { background: #e5e5e5; }
+
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-day-name {
+    text-align: center; font-weight: 800; font-size: 0.78rem;
+    color: var(--gray); padding: 8px 0; letter-spacing: 0.5px;
+  }
+  .cal-day {
+    aspect-ratio: 1; border-radius: 12px; display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative; border: 2px solid transparent;
+  }
+  .cal-day:hover:not(.empty):not(.past) { transform: scale(1.08); box-shadow: 0 4px 12px rgba(255,110,180,0.2); }
+  .cal-day.empty { background: transparent; cursor: default; }
+  .cal-day.past { background: #f5f5f5; color: #ccc; cursor: default; }
+  .cal-day.available { background: #d4f5e9; color: #1a7a4a; border-color: var(--mint); }
+  .cal-day.booked { background: #ffe0e0; color: #c0392b; border-color: #ffb3b3; }
+  .cal-day.available .day-label { font-size: 0.62rem; font-weight: 800; color: #1a7a4a; margin-top: 2px; }
+  .cal-day.booked .day-label { font-size: 0.62rem; font-weight: 800; color: #c0392b; margin-top: 2px; }
+  .cal-day.today { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,110,180,0.2); }
+
+  /* Time slots popup */
+  .time-info {
+    margin-top: 28px; background: var(--pink-pale);
+    border-radius: 16px; padding: 20px 24px;
+    border: 1.5px solid var(--pink-light);
+    font-weight: 600; color: var(--gray); font-size: 0.9rem;
+    min-height: 60px; display: flex; align-items: center; gap: 12px;
+  }
+  .time-info-icon { font-size: 1.4rem; }
+
+  /* ── AREA ── */
+  .area-section { text-align: center; }
+  .area-visual {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: white; border-radius: 24px; padding: 48px;
+    box-shadow: 0 8px 40px rgba(255,110,180,0.12);
+    border: 2px solid var(--pink-light); margin-bottom: 40px;
+    position: relative;
+  }
+  .area-map-emoji { font-size: 5rem; margin-bottom: 8px; }
+  .area-circle {
+    width: 200px; height: 200px; border-radius: 50%;
+    border: 3px dashed var(--pink);
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, rgba(255,110,180,0.1), rgba(255,110,180,0.03));
+    position: relative; margin: 16px 0;
+  }
+  .area-center { font-size: 2.5rem; }
+  .area-radius {
+    position: absolute; top: 50%; left: 100%; transform: translateY(-50%);
+    background: var(--yellow); border-radius: 50px; padding: 6px 14px;
+    font-weight: 800; font-size: 0.8rem; color: #7a5500;
+    white-space: nowrap; margin-left: 12px;
+  }
+  .area-places {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px;
+  }
+  .area-chip {
+    background: var(--pink-light); border-radius: 50px;
+    padding: 8px 18px; font-weight: 800; font-size: 0.85rem; color: var(--pink-dark);
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 100%);
+    border-radius: 32px; margin: 0 3% 60px; padding: 60px 5%;
+    text-align: center; color: white;
+    box-shadow: 0 12px 48px rgba(255,110,180,0.35);
+  }
+  .contact-section h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 12px;
+  }
+  .contact-section p { opacity: 0.9; font-size: 1rem; font-weight: 600; margin-bottom: 32px; }
+  .contact-form-inline { display: flex; flex-direction: column; gap: 14px; max-width: 480px; margin: 0 auto; }
+  .contact-form-inline input, .contact-form-inline textarea {
+    background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 14px; padding: 14px 20px; color: white;
+    font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 600;
+    outline: none; transition: border-color 0.2s;
+  }
+  .contact-form-inline input::placeholder, .contact-form-inline textarea::placeholder { color: rgba(255,255,255,0.7); }
+  .contact-form-inline input:focus, .contact-form-inline textarea:focus { border-color: white; }
+  .contact-form-inline textarea { min-height: 100px; resize: vertical; }
+  .btn-white {
+    background: white; color: var(--pink-dark);
+    border: none; padding: 16px 40px; border-radius: 50px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+  .btn-white:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 32px 6%;
+    color: var(--gray); font-size: 0.85rem; font-weight: 700;
+  }
+  footer span { color: var(--pink); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .hero-art { font-size: 5rem; top: 15%; transform: none; right: 5%; }
+    .area-circle { width: 150px; height: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating bubbles -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span class="logo-emoji">🧸</span> Sita Oppas</div>
+  <ul>
+    <li><a href="#over">Over Sita</a></li>
+    <li><a href="#kalender">Kalender</a></li>
+    <li><a href="#gebied">Werkgebied</a></li>
+    <li><a href="#contact" class="nav-cta">Boek Nu</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🌟 Beschikbaar in avonden & weekenden</div>
+    <h1>Betrouwbare<br><span>Oppas</span><br>bij u thuis!</h1>
+    <p class="hero-sub">Hallo! Ik ben Sita — een warme, betrouwbare oppas voor uw kinderen in de avonduren en weekenden. Ik zorg met liefde en plezier voor uw kleintjes!</p>
+    <div class="price-tag">
+      <div class="price-big">€5,-</div>
+      <div class="price-info">per uur<br>per kind</div>
+      <div style="font-size:1.8rem">💕</div>
+    </div>
+    <div class="hero-actions">
+      <a href="#kalender" class="btn-pink">📅 Bekijk Beschikbaarheid</a>
+      <a href="#contact" class="btn-outline">📩 Stuur een Berichtje</a>
+    </div>
+  </div>
+  <div class="hero-art">👧🏽</div>
+</section>
+
+<!-- OVER SITA -->
+<section id="over">
+  <div class="section-label">Over Mij</div>
+  <div class="section-title">Maak kennis met Sita 💖</div>
+  <div class="about-grid">
+    <div class="about-card">
+      <img src="data:image/jpeg;base64,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" alt="Sita" style="width:160px;height:160px;border-radius:50%;object-fit:cover;object-position:center top;border:4px solid var(--pink-light);box-shadow:0 8px 32px rgba(255,110,180,0.2);margin-bottom:16px;" onerror="this.style.display='none'">
+      <div class="about-name">Sita</div>
+      <div class="about-age">36 jaar • Spijkenisse</div>
+      <p class="about-desc">Ik ben een warme en enthousiaste oppas met veel liefde voor kinderen. In mijn vrije avonden en weekenden help ik graag ouders die even een avondje uit willen of gewoon een handje hulp kunnen gebruiken. Uw kind is bij mij in goede handen! 🌈</p>
+    </div>
+    <div class="about-features">
+      <div class="feature">
+        <div class="feature-icon">🌙</div>
+        <div>
+          <h4>Avonden & Weekenden</h4>
+          <p>Beschikbaar op doordeweekse avonden en in het weekend — precies wanneer ouders het nodig hebben.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <div>
+          <h4>Eerlijk Tarief</h4>
+          <p>Slechts €5,- per uur per kind. Transparent en zonder verborgen kosten.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">❤️</div>
+        <div>
+          <h4>Met Liefde & Aandacht</h4>
+          <p>Ik besteed echte aandacht aan elk kind — spelen, voorlezen, knutselen of gewoon gezellig zijn.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📍</div>
+        <div>
+          <h4>Bij u thuis</h4>
+          <p>Ik kom naar u toe binnen een straal van 15 km rondom Spijkenisse. Vertrouwd en comfortabel voor uw kind.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KALENDER -->
+<section id="kalender" style="padding: 0 0 90px 0;">
+  <div style="padding: 0 6% 40px;">
+    <div class="section-label">Beschikbaarheid</div>
+    <div class="section-title">Wanneer ben ik beschikbaar? 📅</div>
+  </div>
+  <div class="calendar-section">
+    <div class="cal-header">
+      <div class="cal-nav">
+        <button class="cal-btn" onclick="changeMonth(-1)">‹</button>
+        <div class="cal-month" id="cal-month-label"></div>
+        <button class="cal-btn" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-legend">
+        <div class="legend-item"><div class="legend-dot dot-available"></div> Beschikbaar</div>
+        <div class="legend-item"><div class="legend-dot dot-booked"></div> Volgeboekt</div>
+        <div class="legend-item"><div class="legend-dot dot-unavailable"></div> Niet beschikbaar</div>
+      </div>
+    </div>
+
+    <div class="cal-grid" id="cal-grid">
+      <div class="cal-day-name">Ma</div>
+      <div class="cal-day-name">Di</div>
+      <div class="cal-day-name">Wo</div>
+      <div class="cal-day-name">Do</div>
+      <div class="cal-day-name">Vr</div>
+      <div class="cal-day-name">Za</div>
+      <div class="cal-day-name">Zo</div>
+    </div>
+
+    <div class="time-info" id="time-info">
+      <span class="time-info-icon">👆</span>
+      <span>Klik op een dag om de beschikbare tijden te zien.</span>
+    </div>
+  </div>
+</section>
+
+<!-- WERKGEBIED -->
+<section id="gebied" class="area-section">
+  <div class="section-label">Werkgebied</div>
+  <div class="section-title">Waar kom ik naartoe? 📍</div>
+  <div class="area-visual">
+    <div class="area-map-emoji">🗺️</div>
+    <div class="area-circle">
+      <div class="area-center">🏠<br><small style="font-size:0.7rem;font-weight:800;color:var(--pink-dark)">Spijkenisse</small></div>
+      <div class="area-radius">15 km straal</div>
+    </div>
+  </div>
+  <div class="area-places">
+    <div class="area-chip">📍 Spijkenisse</div>
+    <div class="area-chip">📍 Hoogvliet</div>
+    <div class="area-chip">📍 Barendrecht</div>
+    <div class="area-chip">📍 Vlaardingen</div>
+    <div class="area-chip">📍 Brielle</div>
+    <div class="area-chip">📍 Hellevoetsluis</div>
+    <div class="area-chip">📍 & omgeving</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact" class="contact-section">
+  <h2>Reserveer een Oppassessie! 🎉</h2>
+  <p>Stuur me een berichtje en ik reageer zo snel mogelijk!</p>
+  <div class="contact-form-inline">
+    <input type="text" placeholder="Uw naam">
+    <input type="tel" placeholder="Telefoonnummer">
+    <input type="text" placeholder="Datum & tijd (bijv. zaterdag 10 mei, 19:00)">
+    <textarea placeholder="Aantal kinderen en leeftijd(en)..."></textarea>
+    <button class="btn-white">💌 Stuur Aanvraag</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Sita Oppas · Gemaakt met <span>♥</span> · Spijkenisse & Omgeving</p>
+</footer>
+
+<script>
+  // ── BUBBLES ──
+  const bubbleColors = ['#ffb3d9','#ffd6ec','#c084fc','#ffd166','#a8e6cf'];
+  const container = document.getElementById('bubbles');
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = 20 + Math.random() * 60;
+    b.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      background:${bubbleColors[Math.floor(Math.random()*bubbleColors.length)]};
+      animation-duration:${10+Math.random()*20}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    container.appendChild(b);
+  }
+
+  // ── CALENDAR ──
+  // Availability data: day-of-week based (1=Mon...7=Sun)
+  // Available: Mon(1), Wed(3), Fri(5), Sat(6), Sun(7) evenings
+  // Booked = specific dates (simulate some bookings)
+  const today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth(); // 0-indexed
+
+  // Simulate some booked dates (relative to today)
+  function getBookedDates(year, month) {
+    // We'll book a few fixed day-numbers for realism
+    return [3, 8, 14, 21, 27].filter(d => {
+      const date = new Date(year, month, d);
+      return date.getMonth() === month;
+    });
+  }
+
+  function isAvailableDay(dayOfWeek) {
+    // Available Mon(1), Wed(3), Fri(5), Sat(6), Sun(0)
+    return [0, 1, 3, 5, 6].includes(dayOfWeek);
+  }
+
+  function getTimeSlots(dayOfWeek, booked) {
+    if (booked) return null;
+    if (dayOfWeek === 6 || dayOfWeek === 0) {
+      // Weekend
+      return '10:00 – 22:00 (overdag & avond)';
+    }
+    return '18:00 – 23:00 (avond)';
+  }
+
+  const monthNames = ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
+
+  function renderCalendar() {
+    const label = document.getElementById('cal-month-label');
+    label.textContent = monthNames[currentMonth] + ' ' + currentYear;
+
+    const grid = document.getElementById('cal-grid');
+    // Remove old day cells (keep day name headers = first 7 children)
+    while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    // Monday-first: getDay() 0=Sun → shift
+    let startDow = firstDay.getDay(); // 0=Sun
+    startDow = (startDow === 0) ? 6 : startDow - 1; // Mon=0
+
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const booked = getBookedDates(currentYear, currentMonth);
+
+    // Empty cells
+    for (let i = 0; i < startDow; i++) {
+      const empty = document.createElement('div');
+      empty.className = 'cal-day empty';
+      grid.appendChild(empty);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(currentYear, currentMonth, d);
+      const dow = date.getDay(); // 0=Sun
+      const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const isToday = date.toDateString() === today.toDateString();
+      const isBooked = booked.includes(d);
+      const available = isAvailableDay(dow) && !isBooked && !isPast;
+
+      const cell = document.createElement('div');
+      let cls = 'cal-day';
+      if (isPast) cls += ' past';
+      else if (isBooked) cls += ' booked';
+      else if (available) cls += ' available';
+      if (isToday) cls += ' today';
+      cell.className = cls;
+
+      cell.innerHTML = `<span>${d}</span>`;
+      if (!isPast) {
+        if (isBooked) cell.innerHTML += `<span class="day-label">Volgeboekt</span>`;
+        else if (available) cell.innerHTML += `<span class="day-label">Vrij</span>`;
+      }
+
+      if (!isPast) {
+        cell.addEventListener('click', () => {
+          const info = document.getElementById('time-info');
+          const dayNames = ['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'];
+          if (isBooked) {
+            info.innerHTML = `<span class="time-info-icon">❌</span><span><strong>${dayNames[dow]} ${d} ${monthNames[currentMonth]}</strong> — Deze dag is al volgeboekt. Kies een andere dag!</span>`;
+          } else if (available) {
+            const slots = getTimeSlots(dow, false);
+            info.innerHTML = `<span class="time-info-icon">✅</span><span><strong>${dayNames[dow]} ${d} ${monthNames[currentMonth]}</strong> — Beschikbaar van <strong>${slots}</strong>. Stuur me een berichtje om te reserveren!</span>`;
+          } else {
+            info.innerHTML = `<span class="time-info-icon">😴</span><span><strong>${dayNames[dow]} ${d} ${monthNames[currentMonth]}</strong> — Op deze dag ben ik niet beschikbaar.</span>`;
+          }
+        });
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function changeMonth(dir) {
+    currentMonth += dir;
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+    renderCalendar();
+    document.getElementById('time-info').innerHTML = `<span class="time-info-icon">👆</span><span>Klik op een dag om de beschikbare tijden te zien.</span>`;
+  }
+
+  renderCalendar();
+</script>
+</body>
+</html>
